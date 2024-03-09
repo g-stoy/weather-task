@@ -33,7 +33,7 @@ def get_five_cities(list_data:list) -> dict:
     return list_data.sample(n=5).to_dict('records')
 
 
-def prepate_city_data():
+def prepate_city_data()-> list:
     cities_list = []
     coldest_city = ''
     average_temp = float
@@ -51,10 +51,27 @@ def prepate_city_data():
             'temp': float(data[1]),
             'humidity': float(data[2])})
 
-    coldest_city = functools.reduce(lambda a, b: a if a['temp'] < b['temp'] else b, cities_list)['city']
-    average_temp = round(sum([i['temp'] for i in cities_list])/ len(cities_list), 2)
 
-    print(coldest_city, average_temp)
+    return cities_list
 
 
-prepate_city_data()
+
+if __name__=='__main__':
+    while(True):
+        #Get random 5 cities {city, country, weather, temp, humidity}    
+        data = prepate_city_data()
+
+        for city_data in data:
+            [city, country, weather, temp, humidity] = city_data.values()
+            print(f'The weather in {city}/{country} is {weather} with current temperature {temp} Celsium and humidity {humidity}%.')
+    
+        print('-'*100)
+
+        coldest_city = functools.reduce(lambda a, b: a if a['temp'] < b['temp'] else b, data)['city']
+        average_temp = round(sum([i['temp'] for i in data])/ len(data), 2)
+
+        print(f'The coldest city: {coldest_city}\n')
+        print(f'The average temperature: {average_temp} Celsium\n')
+        print('-'*100)
+        break
+
