@@ -23,6 +23,7 @@ def get_all_cities()-> None:
 
 
 def read_excel(file_name='cities_list.xlsx'):
+    get_all_cities()
     excel_data_df = pandas.read_excel(file_name)
     cities = excel_data_df.to_json(orient='records')
 
@@ -36,7 +37,6 @@ def get_five_cities(list_data:list) -> dict:
 def prepare_city_data(cities_data=get_five_cities(read_excel()) )-> list:
     cities_list = []
 
-    get_all_cities()
 
     for i in cities_data:
 
@@ -100,6 +100,7 @@ def print_menu():
 
 
 if __name__=='__main__':
+    get_all_cities()
     #visualize data for 5 random cities and write info about coldest city and average temperature
     visualise_data()
 
