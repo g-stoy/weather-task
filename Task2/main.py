@@ -12,9 +12,12 @@ class WeatherApp(QWidget):
         super().__init__()
         self.setWindowTitle("Weather App")
         self.layout = QVBoxLayout()
+        self.cities_data = []
         self.city_labels = []
         self.create_city_labels()
         self.setLayout(self.layout)
+        self.average_temp_label = QLabel()
+        self.layout.addWidget(self.average_temp_label)
         self.get_weather_data()
         self.refresh_button = QPushButton("Refresh")
         self.refresh_button.clicked.connect(self.get_weather_data)
@@ -27,7 +30,6 @@ class WeatherApp(QWidget):
         self.layout.addWidget(self.search_buton)
         self.search_city = QLabel()
         self.layout.addWidget(self.search_city)
-
 
     def create_city_labels(self):
         for _ in range(5):
@@ -42,6 +44,10 @@ class WeatherApp(QWidget):
         return response.json()
 
 
+    def get_average_temp(self):
+        return sum([i['temp'] for i in self.cities_data])/5  
+    
+
     def get_weather_data(self):
         cities = random.sample(self.get_all_cities(), 5)
 
@@ -49,8 +55,10 @@ class WeatherApp(QWidget):
             data = self.api_connection(city)
             temperature = data["main"]["temp"]
             humidity = data["main"]["humidity"]
+            self.cities_data.append({'city': city, 'temp': temperature})
             self.city_labels[i].setText(f"{city}: Temperature : {temperature}°C, Humidity : {humidity}%")
-    
+
+        self.average_temp_label.setText(f'The average temperature for these 5 cities: <b> {round(self.get_average_temp(), 2)}°C</b>')
 
     def get_all_cities(self)-> list:
         if not os.path.isfile('cities_list.xlsx'):
@@ -78,8 +86,6 @@ class WeatherApp(QWidget):
                 self.search_city.setStyleSheet("color: red;")
                 self.search_city.setText(f"The {city_name} is not found!")
             self.search_input.clear()
-
-    
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
