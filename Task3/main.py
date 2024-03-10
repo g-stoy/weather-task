@@ -1,7 +1,7 @@
 import requests
 import random
 import functools
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 from utils.all_cities import cities
 
@@ -15,11 +15,12 @@ def get_city_data(city):
 
 def get_weather_cities():
     cities_list = []
-    
+
     for city in random.sample(cities, 5):
         city_data = get_city_data(city)
         cities_list.append({
             'city': city,
+            'weather': city_data["weather"][0]["main"],
             'temp': city_data["main"]["temp"],
             'humidity': city_data["main"]["humidity"]
         })
@@ -34,12 +35,19 @@ def get_coldest_city(cities_data):
     return functools.reduce(lambda a, b: a if a['temp'] < b['temp'] else b, cities_data)['city']
 
 
-@app.route('/')
-
+@app.route("/", methods=["GET", "POST"])
 def home():
-    cities_weather = get_weather_cities()
-    coldest_city = get_coldest_city(cities_weather)
-    average_temp = round(get_average_temp(cities_weather),2)
-    return render_template('index.html', cities_weather=cities_weather, coldest_city=coldest_city, average_temp=average_temp)
+    if request.method == "POST":
+        city = request.form["city"].capitalize()
+        city_data = get_city_data(city)
+
+        return render_template("index.html", city=city, temperature=city_data["main"]["temp"], humidity=city_data["main"]["humidity"], weather=city_data["weather"][0]["main"])
+    
+    else:
+        cities_weather = get_weather_cities()
+        coldest_city = get_coldest_city(cities_weather)
+        average_temp = round(get_average_temp(cities_weather),2)
+        
+        return render_template('index.html', cities_weather=cities_weather, coldest_city=coldest_city, average_temp=average_temp)
 
 app.run()

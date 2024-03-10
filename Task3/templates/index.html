@@ -10,13 +10,34 @@
 <body>
     <div class="container">
         <h1>Weather App</h1>
+        {% if city %}
+        <h2>Weather for {{ city }}</h2>
+        <p>Weather: {{weather}}</p>
+        <p>Temperature: {{ temperature }}°C</p>
+        <p>Humidity: {{ humidity }}%</p>
+    {% else %}
+        <h2>Random Cities Weather</h2>
         <ul>
             {% for city_data in cities_weather %}
-                <li>{{ city_data.city }}: Temperature: {{ city_data.temp }}°C, Humidity: {{ city_data.humidity }}%</li>
+                <li>{{ city_data.city }}: Weather: {{city_data.weather}} Temperature: {{ city_data.temp }}°C, Humidity: {{ city_data.humidity }}%</li>
             {% endfor %}
         </ul>
-        <h3>The coldest city is {{coldest_city}}</h3>
-        <h3>The average temperature is {{average_temp}}°C</h3>
+        <h4>The coldest city is {{coldest_city}}</h4>
+        <h4>The average temperature is {{average_temp}}°C</h4>
+    {% endif %}
+        <form id="search-city" method="POST" action="/">
+            <div class="mb-3">
+                <label for="city" class="form-label">Search weather by city name</label>
+                <input type="text" class="form-control" id="city" name="city" placeholder="Enter city name...">
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Search">
+            </div>
+            <div class="mb-3">
+                <p id="result"></p>
+            </div>              
+          </div>
+        </form>
     </div>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>   
 </body>
