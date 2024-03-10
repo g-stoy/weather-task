@@ -3,7 +3,7 @@ import os.path
 import requests
 import pandas
 import random
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QPushButton
 
 
 class WeatherApp(QWidget):
@@ -16,6 +16,9 @@ class WeatherApp(QWidget):
         self.create_city_labels()
         self.setLayout(self.layout)
         self.get_weather_data()
+        self.refresh_button = QPushButton("Refresh")
+        self.refresh_button.clicked.connect(self.get_weather_data)
+        self.layout.addWidget(self.refresh_button)
 
 
     def create_city_labels(self):
