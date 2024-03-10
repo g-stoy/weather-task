@@ -59,12 +59,14 @@ class WeatherApp(QWidget):
     def get_average_temp(self):
         return sum([i['temp'] for i in self.cities_data])/5  
     
+    
     def get_coldest_city(self):
         return functools.reduce(lambda a, b: a if a['temp'] < b['temp'] else b, self.cities_data)['city']
     
 
     def get_weather_data(self):
         cities = random.sample(self.get_all_cities(), 5)
+        self.cities_data = []
 
         for i, city in enumerate(cities):
             data = self.api_connection(city)
