@@ -3,6 +3,7 @@ import os.path
 import requests
 import pandas
 import random
+import functools
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit
 
 
@@ -18,6 +19,8 @@ class WeatherApp(QWidget):
         self.setLayout(self.layout)
         self.average_temp_label = QLabel()
         self.layout.addWidget(self.average_temp_label)
+        self.coldest_city_label = QLabel()
+        self.layout.addWidget(self.coldest_city_label)
         self.get_weather_data()
         self.refresh_button = QPushButton("Refresh")
         self.refresh_button.clicked.connect(self.get_weather_data)
@@ -47,6 +50,9 @@ class WeatherApp(QWidget):
     def get_average_temp(self):
         return sum([i['temp'] for i in self.cities_data])/5  
     
+    def get_coldest_city(self):
+        return functools.reduce(lambda a, b: a if a['temp'] < b['temp'] else b, self.cities_data)['city']
+    
 
     def get_weather_data(self):
         cities = random.sample(self.get_all_cities(), 5)
@@ -56,9 +62,11 @@ class WeatherApp(QWidget):
             temperature = data["main"]["temp"]
             humidity = data["main"]["humidity"]
             self.cities_data.append({'city': city, 'temp': temperature})
-            self.city_labels[i].setText(f"{city}: Temperature : {temperature}°C, Humidity : {humidity}%")
+            self.city_labels[i].setText(f"<b>{city}</b>: Temperature : {temperature}°C, Humidity : {humidity}%")
 
         self.average_temp_label.setText(f'The average temperature for these 5 cities: <b> {round(self.get_average_temp(), 2)}°C</b>')
+        self.coldest_city_label.setText(f'The coldest city of these 5 is: <b>{self.get_coldest_city()}</b>')
+
 
     def get_all_cities(self)-> list:
         if not os.path.isfile('cities_list.xlsx'):
