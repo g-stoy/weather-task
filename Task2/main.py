@@ -4,7 +4,7 @@ import requests
 import pandas
 import random
 import functools
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit, QFrame
 
 
 class WeatherApp(QWidget):
@@ -17,20 +17,29 @@ class WeatherApp(QWidget):
         self.city_labels = []
         self.create_city_labels()
         self.setLayout(self.layout)
+        
+        self.separator()
         self.average_temp_label = QLabel()
         self.layout.addWidget(self.average_temp_label)
+
         self.coldest_city_label = QLabel()
         self.layout.addWidget(self.coldest_city_label)
+
         self.get_weather_data()
+
         self.refresh_button = QPushButton("Refresh")
         self.refresh_button.clicked.connect(self.get_weather_data)
         self.layout.addWidget(self.refresh_button)
+        
+        self.separator()
         self.search_input = QLineEdit()
         self.search_input.setPlaceholderText("Enter city name...")
         self.layout.addWidget(self.search_input)
+
         self.search_buton = QPushButton('Search')
         self.search_buton.clicked.connect(self.search_city_weather)
         self.layout.addWidget(self.search_buton)
+
         self.search_city = QLabel()
         self.layout.addWidget(self.search_city)
 
@@ -94,6 +103,14 @@ class WeatherApp(QWidget):
                 self.search_city.setStyleSheet("color: red;")
                 self.search_city.setText(f"The {city_name} is not found!")
             self.search_input.clear()
+    
+
+    def separator(self):
+        separator = QFrame()
+        separator.setFrameShape(QFrame.Shape.HLine)  
+        separator.setFrameShadow(QFrame.Shadow.Sunken)
+        separator.setLineWidth(1)
+        self.layout.addWidget(separator)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
