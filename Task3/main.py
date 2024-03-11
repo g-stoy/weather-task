@@ -35,19 +35,22 @@ def get_coldest_city(cities_data):
     return functools.reduce(lambda a, b: a if a['temp'] < b['temp'] else b, cities_data)['city']
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/")
 def home():
-    if request.method == "POST":
-        city = request.form["city"].capitalize()
-        city_data = get_city_data(city)
-
-        return render_template("index.html", city=city, temperature=city_data["main"]["temp"], humidity=city_data["main"]["humidity"], weather=city_data["weather"][0]["main"])
-    
-    else:
-        cities_weather = get_weather_cities()
-        coldest_city = get_coldest_city(cities_weather)
-        average_temp = round(get_average_temp(cities_weather),2)
+    cities_weather = get_weather_cities()
+    coldest_city = get_coldest_city(cities_weather)
+    average_temp = round(get_average_temp(cities_weather),2)
         
-        return render_template('index.html', cities_weather=cities_weather, coldest_city=coldest_city, average_temp=average_temp)
+    return render_template('index.html', cities_weather=cities_weather, coldest_city=coldest_city, average_temp=average_temp)
+
+@app.route('/get_city_weather', methods=['GET'])
+def get_current_date():
+    city = request.args.get('city')
+    data = get_city_data(city)
+    return {'city': data["name"],
+            'weather': data["weather"][0]["main"],
+            'temp': data["main"]["temp"],
+            'humidity': data["main"]["humidity"]}
+
 
 app.run()
