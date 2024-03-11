@@ -6,38 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <style>
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+            padding: 3%;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Weather App</h1>
-        {% if city %}
-        <h2>Weather for {{ city }}</h2>
-        <p>Weather: {{weather}}</p>
-        <p>Temperature: {{ temperature }}°C</p>
-        <p>Humidity: {{ humidity }}%</p>
-    {% else %}
-        <h2>Random Cities Weather</h2>
+        <h1 class="text-center">Weather App</h1>
+        <h2 class="text-center">Random Cities Weather</h2>
         <ul>
             {% for city_data in cities_weather %}
-                <li>{{ city_data.city }}: Weather: {{city_data.weather}} Temperature: {{ city_data.temp }}°C, Humidity: {{ city_data.humidity }}%</li>
+            <div class="col-md-2">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">{{city_data.city}}</h4>
+                        <p class="card-text">Weather: {{city_data.weather}}</p>
+                        <p class="card-text">Temperature: {{city_data.temp}}°C</p>
+                        <p class="card-text">Humidity: {{city_data.humidity}}%</p>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
         </ul>
-        <h4>The coldest city is {{coldest_city}}</h4>
-        <h4>The average temperature is {{average_temp}}°C</h4>
-    {% endif %}
-        <form id="search-city">
-            <div class="mb-3">
-                <label for="city" class="form-label">Search weather by city name</label>
-                <input type="text" class="form-control" id="city" name="city" placeholder="Enter city name...">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h4 class="text-center" style="margin-top: 2%;">The coldest city is {{coldest_city}}</h4>
+                <h4 class="text-center" style="margin-bottom: 5%;">The average temperature is {{average_temp}}°C</h4>
             </div>
-            <div class="mb-3">
-                <input type="submit" id="searchButton" value="Search">
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <input type="text" class="form-control" id="city" name="city" placeholder="Enter city name..." style="margin-bottom: 5%">
             </div>           
-        </form>
-        <a href="/">
-            <button type="button" id="getButton" class="btn btn-secondary">Refresh</button>
-        </a> 
-        <div class="result">
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <input type="submit" class="btn btn-primary" id="searchButton" value="Search">
+                <a href="/">
+                    <button type="button" id="getButton" class="btn btn-secondary">Refresh Information</button>
+                </a>
+            </div>
+        </div> 
+        <div class="result text-center">
             <p class="rslt_p"></p>
         </div>
     </div>
