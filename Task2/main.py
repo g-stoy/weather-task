@@ -72,8 +72,9 @@ class WeatherApp(QWidget):
             data = self.api_connection(city)
             temperature = data["main"]["temp"]
             humidity = data["main"]["humidity"]
+            weather = data["weather"][0]["main"]
             self.cities_data.append({'city': city, 'temp': temperature})
-            self.city_labels[i].setText(f"<b>{city}</b>: Temperature : {temperature}°C, Humidity : {humidity}%")
+            self.city_labels[i].setText(f"<b>{city}</b>: Weather : {weather}, Temperature : {temperature}°C, Humidity : {humidity}%")
 
         self.average_temp_label.setText(f'The average temperature for these 5 cities: <b> {round(self.get_average_temp(), 2)}°C</b>')
         self.coldest_city_label.setText(f'The coldest city of these 5 is: <b>{self.get_coldest_city()}</b>')
@@ -99,8 +100,9 @@ class WeatherApp(QWidget):
                 data = self.api_connection(city_name)
                 temperature = data["main"]["temp"]
                 humidity = data["main"]["humidity"]
+                weather = data["weather"][0]["main"]
                 self.search_city.setStyleSheet("color: black;")
-                self.search_city.setText(f"{city_name}: Temperature : {temperature}°C, Humidity : {humidity}%")
+                self.search_city.setText(f"{city_name}: Weather : {weather},  Temperature : {temperature}°C, Humidity : {humidity}%")
             else:
                 self.search_city.setStyleSheet("color: red;")
                 self.search_city.setText(f"The {city_name} is not found!")
