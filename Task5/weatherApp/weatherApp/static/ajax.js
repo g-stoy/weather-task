@@ -31,7 +31,6 @@ $(document).ready(function() {
             success: function(response) {
                 $('ul').empty();
                 $('.statistic').empty();
-                console.log(response.coldest_city)
                 response.cities.forEach(function(cityData) {
                     cityItem = $('<div class="col-md-2">').append(
                         $('<div class="card">').append(
@@ -53,6 +52,26 @@ $(document).ready(function() {
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
+            }
+        });
+    });
+    $('.dropdown-item').click(function(event) {
+        event.preventDefault();
+        var category = $(this).text().toLowerCase().trim();
+        $.ajax({
+            url: `/last-ten/${category}/`,  
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                $('.list-group').empty();
+                response.data.forEach(function(cityData) {
+                    console.log(cityData)
+                    var comparisonData = $('<li class="list-group-item">').text(cityData.city + ': ' + cityData.category);
+                    $('.list-group').append(comparisonData);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
             }
         });
     });

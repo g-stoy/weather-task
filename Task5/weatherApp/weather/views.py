@@ -64,3 +64,16 @@ def refresh(request):
     average_temp = round(get_average_temp(weathers), 2),
     coldest_city = get_coldest_city(weathers)
     return JsonResponse({'cities':weathers, 'average_temp': average_temp, 'coldest_city': coldest_city }, safe=False)
+
+def last_ten_records(request, category):
+    comparison_data = []
+    last_10_cities = City.objects.all()[:10]
+    for city in last_10_cities:
+        if category == 'weather':
+            comparison_data.append({'city':city.city_id.city_name, 'category': city.weather})
+        elif category == 'temperature':
+            comparison_data.append({'city':city.city_id.city_name, 'category':city.temp})
+        elif category == 'humidity':
+            comparison_data.append({'city':city.city_id.city_name, 'category':city.humidity})
+
+    return JsonResponse({'data':comparison_data})
