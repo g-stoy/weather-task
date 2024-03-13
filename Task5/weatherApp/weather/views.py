@@ -58,3 +58,9 @@ def get_current_city(request):
             'weather': data["weather"][0]["main"],
             'temp': data["main"]["temp"],
             'humidity': data["main"]["humidity"]})
+
+def refresh(request):
+    weathers = get_weather_cities()
+    average_temp = round(get_average_temp(weathers), 2),
+    coldest_city = get_coldest_city(weathers)
+    return JsonResponse({'cities':weathers, 'average_temp': average_temp, 'coldest_city': coldest_city }, safe=False)
