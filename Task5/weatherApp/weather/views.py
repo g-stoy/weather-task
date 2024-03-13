@@ -3,7 +3,6 @@ import requests
 import random
 
 from django.shortcuts import render
-from django.http import HttpResponse
 from django.http import JsonResponse
 
 from weather.models import City, all_cities
@@ -46,3 +45,16 @@ def get_average_temp(cities_data):
     
 def get_coldest_city(cities_data):
     return functools.reduce(lambda a, b: a if a['temp'] < b['temp'] else b, cities_data)['city']
+
+def get_current_city(request):
+    city = request.GET.get('city')
+
+    data = get_city_data(city)
+    city_instance = all_cities.objects.get(city_name = data["name"])
+    City.objects.create(city_id=city_instance, weather=data["weather"][0]["main"], 
+                            temp=data["main"]["temp"], humidity=data["main"]["humidity"])
+
+    return JsonResponse({'city': data["name"],
+            'weather': data["weather"][0]["main"],
+            'temp': data["main"]["temp"],
+            'humidity': data["main"]["humidity"]})

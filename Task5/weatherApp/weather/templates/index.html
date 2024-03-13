@@ -42,7 +42,46 @@
                 <h4 class="text-center" style="margin-bottom: 5%;">The average temperature is {{average_temp}}°C</h4>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <input type="text" class="form-control" id="city" name="city" placeholder="Enter city name..." style="margin-bottom: 5%">
+            </div>           
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <input type="submit" class="btn btn-primary" id="searchButton" value="Search">
+            </div>
+        </div> 
+        <div class="result text-center">
+            <p class="rslt_p"></p>
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+        $('#searchButton').click(function(event) {
+            event.preventDefault(); 
+    
+            city = $('#city').val();
+    
+            document.querySelector('.rslt_p').textContent = ''
+            
+            $.ajax({
+                url: '/get_city_weather',
+                type: 'GET',
+                data: { city: city }, 
+                success: function(response) {
+                    child = document.querySelector('.rslt_p')
+                    child.textContent = "City " + response['city'] + " Weather: " + response['weather'] + " Temperature: " + response["temp"] + "°C, Humidity: " + response['humidity'] + "%";
+                    $('.result').append(child);
+                    document.querySelector('#city').value = ''
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
+    </script>
 </body>
 </html>
