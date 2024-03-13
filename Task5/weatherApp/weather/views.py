@@ -34,7 +34,9 @@ def get_weather_cities():
             'temp': city_data["main"]["temp"],
             'humidity': city_data["main"]["humidity"]
         })
-
+        city_instance = all_cities.objects.get(id =city['id'])
+        City.objects.create(city_id=city_instance, weather=city_data["weather"][0]["main"], 
+                            temp=city_data["main"]["temp"], humidity=city_data["main"]["humidity"])
     return cities_list
 
 

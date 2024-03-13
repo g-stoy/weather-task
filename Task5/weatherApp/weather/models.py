@@ -13,5 +13,5 @@ class City(models.Model):
     humidity = models.IntegerField()
 
     def __str__(self):
-        return self.city_name
+        return self.city_id.city_name
 
