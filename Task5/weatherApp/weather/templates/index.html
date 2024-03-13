@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <style>
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+            padding: 3%;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Weather App</h1>
+        <h2 class="text-center">Random Cities Weather</h2>
+        <ul>
+            {% for city_data in cities %}
+            <div class="col-md-2">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">{{city_data.city}}</h4>
+                        <p class="card-text">Weather: {{city_data.weather}}</p>
+                        <p class="card-text">Temperature: {{city_data.temp}}°C</p>
+                        <p class="card-text">Humidity: {{city_data.humidity}}%</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </ul>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h4 class="text-center" style="margin-top: 2%;">The coldest city is {{coldest_city}}</h4>
+                <h4 class="text-center" style="margin-bottom: 5%;">The average temperature is {{average_temp}}°C</h4>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+</body>
+</html>

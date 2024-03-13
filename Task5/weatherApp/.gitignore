@@ -1,0 +1,25 @@
+.idea/
+.vscode/
+
+# Кеш на Python
+__pycache__/
+
+# Файлове за настройка на бази данни (SQLite, PostgreSQL, MySQL)
+*.sqlite3
+*.sql
+*.db
+
+# Генерирани от Django
+*.pyc
+*.pyo
+*.pyd
+*.py~
+*.bak
+
+# Статични и медийни файлове (ако използвате collectstatic)
+/static/
+/media/
+
+# Логове
+logs/
+*.log
