@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -58,66 +59,7 @@
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function() {
-        $('#searchButton').click(function(event) {
-            event.preventDefault(); 
-    
-            city = $('#city').val();
-    
-            document.querySelector('.rslt_p').textContent = ''
-            
-            $.ajax({
-                url: '/get_city_weather',
-                type: 'GET',
-                data: { city: city }, 
-                success: function(response) {
-                    child = document.querySelector('.rslt_p')
-                    child.textContent = "City " + response['city'] + " Weather: " + response['weather'] + " Temperature: " + response["temp"] + "°C, Humidity: " + response['humidity'] + "%";
-                    $('.result').append(child);
-                    document.querySelector('#city').value = ''
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                }
-            });
-        });
+    <script src="{% static 'ajax.js' %}"></script>
 
-        $('#refreshButton').click(function(event){
-            event.preventDefault();
-
-            $.ajax({
-                url: '/refresh',
-                type: 'GET',
-                success: function(response) {
-                    $('ul').empty();
-                    $('.statistic').empty();
-                    console.log(response.coldest_city)
-                    response.cities.forEach(function(cityData) {
-                        cityItem = $('<div class="col-md-2">').append(
-                            $('<div class="card">').append(
-                                $('<div class="card-body text-center">').append(
-                                    $('<h4 class="card-title">').text(cityData.city),
-                                    $('<p class="card-text">').text('Weather: ' + cityData.weather),
-                                    $('<p class="card-text">').text('Temperature: ' + cityData.temp + '°C'),
-                                    $('<p class="card-text">').text('Humidity: ' + cityData.humidity + '%')
-                                )
-                            )
-                        );
-                        $('ul').append(cityItem);
-                    })
-                    statistic = $('<div class="col-md-12 text-center">').append(
-                        $('<h4 class="text-center" style="margin-top: 2%;">').text('The coldest city is ' + response.coldest_city),
-                $('<h4 class="text-center" style="margin-bottom: 5%;">').text('The average temperature is '+ response.average_temp + '°C')
-                    )
-                $('.statistic').append(statistic);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                }
-            });
-        });
-    });
-    </script>
 </body>
 </html>
