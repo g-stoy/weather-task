@@ -5,7 +5,6 @@ $(document).ready(function() {
         city = $('#city').val();
 
         document.querySelector('.rslt_p').textContent = ''
-        
         $.ajax({
             url: '/get_city_weather',
             type: 'GET',
@@ -29,10 +28,11 @@ $(document).ready(function() {
             url: '/refresh',
             type: 'GET',
             success: function(response) {
-                $('ul').empty();
+                $('.cards').empty();
+                $('.cards').append($('<div class="row">'));
                 $('.statistic').empty();
                 response.cities.forEach(function(cityData) {
-                    cityItem = $('<div class="col-md-2">').append(
+                    cityItem = $('<div class="col-md">').append(
                         $('<div class="card">').append(
                             $('<div class="card-body text-center">').append(
                                 $('<h4 class="card-title">').text(cityData.city),
@@ -42,7 +42,7 @@ $(document).ready(function() {
                             )
                         )
                     );
-                    $('ul').append(cityItem);
+                    $('.cards').children().append(cityItem);
                 })
                 statistic = $('<div class="col-md-12 text-center">').append(
                     $('<h4 class="text-center" style="margin-top: 2%;">').text('The coldest city is ' + response.coldest_city),
